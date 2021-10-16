@@ -4,16 +4,12 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-//app.use(cors());
+app.use(cors());
 app.use(express.json());
 
-app.get("/getLinkList/:searchTerm", (req, res) => {
+app.get("/getLinkList/:searchTerm", async (req, res) => {
   const { searchTerm } = req.params;
-  getHtml(`https://www.healmedelicious.com/?s=${searchTerm}`);
-  //1. Get html from search query
-  //2. Find links on page
-  //3. Put links into array
-  //4. Return links to f/e
+  res.send(await getHtml(`https://www.healmedelicious.com/?s=${searchTerm}`));
 });
 
 const loadHtml = async (url) => {
@@ -37,11 +33,12 @@ const getHtml = async (url) => {
       .find(".entry-image-link")
       .find("img")
       .attr("data-src");
-
-    linkArr.push({ link, imgSrc });
+    const name = $(value).find(".entry-title-link").text();
+    linkArr.push({ link, imgSrc, name });
   });
   const testValue = $(".entry-header a").attr("href");
   console.log({ linkArr });
+  return linkArr;
 };
 
 app.listen((port = 5000), () => {
