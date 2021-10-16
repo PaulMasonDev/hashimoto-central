@@ -4,20 +4,25 @@ import axios from "axios";
 
 export const SearchBox = (props) => {
   const getData = async () => {
+    props.setIsSearching(true);
     const response = await axios.get(`/getLinkList/${props.searchTerm}`);
     props.setRecipeArray(response.data);
+    props.setIsSearching(false);
+  };
+
+  const handleChange = (e) => {
+    const searchTerm = e.target.value;
+    if (searchTerm === "") props.setRecipeArray([]);
+    props.setSearchTerm(e.target.value);
   };
 
   return (
     <Grid item container spacing={2} direction="column">
-      <Grid item>
-        <Typography variant="h2">Search Ingredient</Typography>
-      </Grid>
       <Grid item container justifyContent="center">
         <TextField
           variant="outlined"
           value={props.searchTerm}
-          onChange={(e) => props.setSearchTerm(e.target.value)}
+          onChange={(e) => handleChange(e)}
         ></TextField>
         <Button variant="contained" color="primary" onClick={getData}>
           Submit

@@ -6,6 +6,7 @@ import { RecipeDisplay } from "./RecipeDisplay";
 export const Main = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [recipeArray, setRecipeArray] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   return (
     <Grid container direction="column">
       <Grid item>
@@ -16,10 +17,15 @@ export const Main = () => {
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           setRecipeArray={setRecipeArray}
+          setIsSearching={setIsSearching}
         />
       </Grid>
       <Grid item>
-        <RecipeDisplay searchTerm={searchTerm} recipeArray={recipeArray} />
+        <RecipeDisplay
+          searchTerm={searchTerm}
+          recipeArray={recipeArray}
+          isSearching={isSearching}
+        />
       </Grid>
     </Grid>
   );
